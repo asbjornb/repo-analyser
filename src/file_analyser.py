@@ -1,20 +1,20 @@
 import os
 
-def analysefile(filepath):
-    _ = open(filepath, 'r') 
-    _, extension = os.path.splitext(filepath)
-    return {"extension": extension,
-            "line_count": 7}
-    #dict = {"extension": ".py",
-    #        "number of lines": 7,
-    #        "linelengths": [17,7,7,9,12,0,12],
-    #        "number of methods": 1}
-    #return dict
+def analyse_from_filepath(filepath):
+    with open(filepath, 'r')  as file:
+        output = analyse_file(file)
+        output.update(get_extension_from_filepath(filepath))
+        return output
 
-#def analyse_from_path(filepath):
-    
-#raise FileNotFoundError
-#def run(args):
-#    print("repo-analyser started")
-#    stats = _analyzefile(args.filepath)
-#    print(stats)
+def analyse_file(file):
+    lines = file.readlines()
+    line_count = len(lines)
+    line_lengths = []
+    for line in lines:
+        line_lengths.append(len(line))
+    return {"line_count": line_count,
+            "line_lengths": line_lengths}
+
+def get_extension_from_filepath(filepath):
+    _, extension = os.path.splitext(filepath)
+    return {"extension": extension}
